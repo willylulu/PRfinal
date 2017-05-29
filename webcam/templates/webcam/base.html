@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     {% load staticfiles %}
     <meta charset="utf-8">
     <title>PR Final</title>
     <link rel="stylesheet" href="{% static 'webcam/style.css' %}">
-  </head>
-  <body>
-    {% block body %}
-    {% endblock %}
-  </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    {% block body %} {% endblock %}
+    <script src="{% static 'webcam/main.js' %}"></script>
+</body>
+
 </html>

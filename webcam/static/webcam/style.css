@@ -1,3 +1,7 @@
-h1 {
-  color: red;
+#video {
+    border: solid 1px;
+}
+
+#cam-image {
+    display: none;
 }

@@ -1,5 +1,6 @@
-{% extends 'webcam/base.html' %}
-
-{% block body %}
-<h1>Hello sir Andy</h1>
+{% extends 'webcam/base.html' %} {% block body %}
+<div id="cam-container">
+    <video width=400 height=400 id="video"></video>
+    <canvas id="cam-image"></canvas>
+</div>
 {% endblock %}
