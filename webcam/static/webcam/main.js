@@ -19,12 +19,23 @@ function errorCallback(error) {
 }
 
 video.addEventListener('canplay', function() {
-    if (!streaming) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        streaming = true;
-    }
-
+    canvas.width = 128;
+    canvas.height = 128;
+    //screenShotAndDetect();
+    setInterval(screenShotAndDetect,300);
 }, false);
 
 navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+function screenShotAndDetect(){
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(video,0,0,128,128);
+    var pixels = ctx.getImageData(0,0,128,128).data;
+    //detectImage(pixels);
+}
+
+function detectImage(pixels){
+    $.post('/detect',{pixels:pixels},function(response){
+
+    });
+}
