@@ -1,14 +1,62 @@
 {% extends 'webcam/base.html' %} {% block body %}
-<div id="cam-container">
-    <video width=640 height=480 id="video"></video>
-    <canvas id="cam-image"></canvas>
-</div>
-<div>
-    <button id="testBut" onclick="testDetect()">傳送</button>
-</div>
-<form action="/webcam/video/" method="post">
+<form method="post">
   {% csrf_token %}
-  <input type="text" name="content">
-  <input type="submit">
+  <div id="cam-container">
+      <video width=640 height=480 id="video"></video>
+      <canvas id="cam-image"></canvas>
+  </div>
+  <div>
+      <button id="testBut" onclick="testDetect()">傳送</button>
+  </div>
 </form>
+
+<script>
+video = document.getElementById('video');
+canvas = document.getElementById('cam-image');
+
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+var constraints = { audio: false, video: true };
+
+function successCallback(stream) {
+    window.stream = stream; // stream available to console
+    if (window.URL) {
+        video.src = window.URL.createObjectURL(stream);
+    } else {
+        video.src = stream;
+    }
+}
+
+function errorCallback(error) {
+    console.log("navigator.getUserMedia error: ", error);
+}
+
+video.addEventListener('canplay', function() {
+    canvas.width = 128;
+    canvas.height = 128;
+    screenShotAndDetect();
+    //setInterval(screenShotAndDetect,300);
+}, false);
+
+navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+function screenShotAndDetect(){
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(video,0,0,128,128);
+    var pixels = ctx.getImageData(0,0,128,128).data;
+    console.log(pixels);
+    // detectImage(pixels);
+}
+
+function detectImage(pixels){
+    $.post('/webcam/detect/',{pixels:pixels},function(response){
+
+    });
+}
+
+function testDetect(){
+  $.post('/webcam/detect/', {hi: 'hi'});
+    screenShotAndDetect();
+}
+</script>
 {% endblock %}

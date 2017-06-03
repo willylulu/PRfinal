@@ -9,6 +9,6 @@ def index(request):
     context = {}
     return render(request, 'webcam/index.html', context)
 
-def video(request):
-    print (request.POST['content'])
+def detect(request):
+    print (request.POST)
     return redirect('/webcam/')
