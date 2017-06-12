@@ -1,9 +1,71 @@
 {% extends 'webcam/base.html' %} {% block body %}
-<div id="cam-container">
-    <video width=640 height=480 id="video"></video>
-    <canvas id="cam-image"></canvas>
+<div class="row">
+  <div class="container">
+    <div id="cam-container">
+      <div class="row">
+        <div class="col s12">
+          <video id="video"></video>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <form action="/webcam/detect/" method="post" id="detect-form">
+            {% csrf_token %}
+            <input type="submit" id="submit-btn" style="display: none">
+            <a class="waves-effect waves-light btn orange darken-1" id="detect-btn" onclick="$('#submit-btn').click();">Detect</a>
+            <canvas id="cam-image"></canvas>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <a id="result-text">We see: <span id="result"></span></a>
+          <div id="preloader" class="preloader-wrapper small">
+            <div class="spinner-layer spinner-blue">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
-<div>
-    <button id="testBut" onclick="testDetect()">傳送</button>
-</div>
+
 {% endblock %}

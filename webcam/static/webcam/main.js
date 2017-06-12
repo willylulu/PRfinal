@@ -1,6 +1,6 @@
 video = document.getElementById('video');
 canvas = document.getElementById('cam-image');
-
+console.log('hi');
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 var constraints = { audio: false, video: true };
@@ -32,6 +32,7 @@ function screenShotAndDetect(){
     ctx.drawImage(video,0,0,128,128);
     var pixels = ctx.getImageData(0,0,128,128).data;
     console.log(pixels);
+    return JSON.stringify(pixels);
     //detectImage(pixels);
 }
 
@@ -61,11 +62,46 @@ if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !=
 function speak(text, callback) {
     var u = new SpeechSynthesisUtterance();
     u.text = text;
-    u.lang = 'zh-TW';
+    u.lang = 'en-US';
     u.voice = voices[0];
-    console.log(voices);
     u.onend = callback;
     speechSynthesis.speak(u);
 }
 
-speak("狗屎");
+$(document).ready(function() {
+  $('#detect-form').submit(function() {
+    data = $(this).serialize();
+    // data += '&hi="hi"';
+    data += `&screen=${screenShotAndDetect()}`;
+    $('#detect-btn').toggleClass('disabled');
+    $('#detect-btn').html('Detecting...');
+    $('#preloader').toggleClass('active');
+    $('#result').html('');
+    $('#cam-image').css('display', 'block');
+    $.ajax({
+      type: $(this).attr('method'),
+      url: $(this).attr('action'),
+      data: data,
+      success: function (data) {
+        if (!data) {
+          $('#result').html('failed to detect');
+        } else {
+          $('#result').html(data);
+          speak('we see! ' + data);
+        }
+        $('#detect-btn').toggleClass('disabled');
+        $('#detect-btn').html('Detect');
+        $('#preloader').toggleClass('active');
+      },
+      error: function(data) {
+        $('#result').html('error');
+        $('#detect-btn').toggleClass('disabled');
+        $('#detect-btn').html('Detecting');
+        $('#preloader').toggleClass('active');
+      }
+    });
+    return false;
+  });
+})
+
+// speak("狗屎");
